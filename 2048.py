@@ -76,8 +76,6 @@ def drawTile(number, j, i):
         pygame.draw.rect(screen, tileColor2048,(j*175,i*175,tileSize,tileSize))
         writeToScreen("2048",60,textColor2,(j*175 + fontPos, i*175 + fontPos))
 
- 
-
 def addNum():
     global board
     options = []
@@ -96,9 +94,6 @@ def addNum():
         pygame.quit()
         exit()
 
-
-
-    
 def move(direction):   
     if direction == "right":
         for i in range(4):
@@ -160,7 +155,6 @@ def move(direction):
                                 board[-k+1][i] += board[-k+1][i] 
                                 board[-k][i] = 0
 
-
 def play():
     global counter
     for i in range(4):
@@ -186,15 +180,11 @@ def play():
             move("down") 
             addNum()
        
-            
-
 def loop():
     screen.fill(backgroundColor)
     play()
     drawGrid()
     pygame.display.flip()
-
-
 
 def main():
     loopChecker = True 
@@ -203,5 +193,4 @@ def main():
             if event.type == pygame.QUIT:
                 loopChecker = False 
             loop()
-
 main()
