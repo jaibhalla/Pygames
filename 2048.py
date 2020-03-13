@@ -26,6 +26,8 @@ textColor2 = 249,246,241
 screen = pygame.display.set_mode([gridSize,gridSize])
 board = [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]]
 
+counter = 0
+
 def writeToScreen(text,fsize,color,tpos):
     font = pygame.font.SysFont("Helvetica Neue",fsize)
     text = font.render(text,True, color)
@@ -74,7 +76,7 @@ def drawTile(number, j, i):
         pygame.draw.rect(screen, tileColor2048,(j*175,i*175,tileSize,tileSize))
         writeToScreen("2048",60,textColor2,(j*175 + fontPos, i*175 + fontPos))
 
-counter = 0 
+ 
 
 def addNum():
     global board
