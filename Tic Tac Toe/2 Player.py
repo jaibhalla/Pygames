@@ -30,10 +30,15 @@ def draw():
                 pygame.draw.line(screen,color,(j*cubeSize + crossOffset,(i+1)*cubeSize - crossOffset),(((j+1)*cubeSize - crossOffset,i*cubeSize + crossOffset)))    
 
 def winner(a):
+    global counter
     if a == 0:
-        print("0 is the Winner")
+        if counter == 0:
+            print("0 is the Winner")
+            counter = 1 
     else: 
-        print("X is the Winner")
+        if counter == 0:
+            print("X is the Winner")
+            counter = 1 
 
 def check():
     for i in range(3):
