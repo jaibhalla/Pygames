@@ -8,7 +8,7 @@ screenColor = 0,0,0
 color = 255,255,255
 
 playerCounter = random.randrange(0,2)
-
+counter = 0
 mx, my = 0, 0
 
 array = [[3,4,5],[6,7,8],[9,10,11]]
@@ -32,10 +32,15 @@ def draw():
                 pygame.draw.line(screen,color,(j*cubeSize + crossOffset,(i+1)*cubeSize - crossOffset),(((j+1)*cubeSize - crossOffset,i*cubeSize + crossOffset)))    
 
 def winner(a):
+    global counter
     if a == 0:
-        print("0 is the Winner")
+        if counter == 0:
+            print("0 is the Winner")
+            counter = 1 
     else: 
-        print("X is the Winner")
+        if counter == 0:
+            print("X is the Winner")
+            counter = 1 
 
 def check():
     for i in range(3):
