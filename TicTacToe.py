@@ -47,20 +47,18 @@ def check():
         elif array[0][2] == array[1][1] and array[1][1] == array[2][0]:
             winner(array[1][1])
 
-def play():
+def updateArray():
     global playerCounter
     for i in range(3):
         for j in range(3):
             if mx>j*cubeSize and mx<(j+1)*cubeSize and my>i*cubeSize and my<(i+1)*cubeSize:
                 array[i][j] = playerCounter      
-    check()                
-                
-
+                 
 def loop():
     screen.fill(screenColor)
     grid()
     draw()
-    play()
+    check()  
     pygame.display.flip()
 
 def main():
@@ -76,5 +74,6 @@ def main():
                     playerCounter = 1
                 else:
                      playerCounter = 0   
+                updateArray()
             loop()
 main()
