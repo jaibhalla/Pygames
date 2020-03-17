@@ -79,6 +79,7 @@ def move(direction):
                 if board[i][j] == board[i][j+1]:
                     board[i][j+1] += board[i][j+1]
                     board[i][j] = 0 
+                    moveChecker += 1
                 if board[i][j] != 0: 
                     for k in range(1,4-j):
                         if board[i][-k] == 0:
@@ -95,6 +96,7 @@ def move(direction):
                 if board[i][j] == board[i][j-1]:
                     board[i][j-1] += board[i][j-1]
                     board[i][j] = 0 
+                    moveChecker += 1
                 if board[i][j] != 0: 
                     for k in range(0,j):
                         if board[i][k] == 0:
@@ -111,6 +113,7 @@ def move(direction):
                 if board[j][i] == board[j-1][i]:
                     board[j-1][i] += board[j-1][i] 
                     board[j][i] = 0 
+                    moveChecker += 1
                 if board[j][i] != 0: 
                     for k in range(0,j):
                         if board[k][i] == 0:
@@ -127,6 +130,7 @@ def move(direction):
                 if board[j][i] == board[j+1][i]:
                     board[j+1][i] += board[j+1][i] 
                     board[j][i] = 0 
+                    moveChecker += 1
                 if board[j][i] != 0: 
                     for k in range(1,4-j):
                         if board[-k][i] == 0:
