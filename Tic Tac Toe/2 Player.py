@@ -9,7 +9,6 @@ color = 255,255,255
 playerCounter = random.randrange(0,2)
 
 mx, my = 0, 0
-
 array = [[3,4,5],[6,7,8],[9,10,11]]
 
 def grid():
