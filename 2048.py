@@ -53,8 +53,6 @@ def drawTile(number, j, i):
         pygame.draw.rect(screen, tileColors[index],(j*175,i*175,tileSize,tileSize))
         writeToScreen(str(number),textSize,textColor1,(j*175 + fontPos, i*175 + fontPos))
 
-
-
 def addNum():
     global board
     options = []
@@ -138,8 +136,6 @@ def move(direction):
                             if board[-k][i] == board[-k+1][i]:
                                 board[-k+1][i] += board[-k+1][i] 
                                 board[-k][i] = 0
-
-
 
 def play():
     global counter, moveChecker
