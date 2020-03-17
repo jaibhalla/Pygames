@@ -7,7 +7,7 @@ screen = pygame.display.set_mode([width,width])
 screenColor = 0,0,0
 color = 255,255,255
 playerCounter = random.randrange(0,2)
-
+counter = 0 
 mx, my = 0, 0
 array = [[3,4,5],[6,7,8],[9,10,11]]
 
