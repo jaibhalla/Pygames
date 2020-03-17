@@ -8,6 +8,7 @@ screenColor = 0,0,0
 color = 255,255,255
 
 playerCounter = 1
+counter = 0 
 
 mx, my = 0, 0
 
@@ -56,7 +57,6 @@ def updateArray():
             if mx>j*cubeSize and mx<(j+1)*cubeSize and my>i*cubeSize and my<(i+1)*cubeSize:
                 array[i][j] = playerCounter                  
 
-counter = 0 
 def printWinner(a):
     global counter
     if a == None:
@@ -80,7 +80,6 @@ def loop():
     a = check(array) 
     printWinner(a)
     pygame.display.flip()
-
 
 def AITurn():
     global array, playerCounter
