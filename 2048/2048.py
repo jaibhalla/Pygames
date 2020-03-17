@@ -180,6 +180,7 @@ def loop():
     drawGrid()
     pygame.display.flip()
 
+    
 def main():
     loopChecker = True 
     while loopChecker:
