@@ -1,0 +1,21 @@
+html{
+    background-color:black;
+}
+
+canvas{
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    background-color:black;
+    /* border: 1px solid white; */
+}
+
+#layout{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    width: 620px;
+    height: 620px;
+}
