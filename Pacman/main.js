@@ -47,7 +47,7 @@ function drawGrid(){
                 grid[convert(i,j)].cellFood.show()
             }
             grid[convert(i,j)].draw()
-            nodes[convert(i,j)].draw()
+            // nodes[convert(i,j)].draw()
         }    
     }
 }
