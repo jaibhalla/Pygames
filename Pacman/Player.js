@@ -6,12 +6,12 @@ let tempDir = [0,0] //Stores the direction after arrow key is pressed but before
 
 
 class player{
-  constructor(i,j,color){
-    this.currentCell = [i,j] 
-    this.xPixel = i*cellSize 
-    this.yPixel = j*cellSize 
+  constructor(color){
+    this.currentCell = [14,23] 
+    this.xPixel = this.currentCell[0]*cellSize 
+    this.yPixel = this.currentCell[1]*cellSize 
     this.color = color
-    this.dir = [1,0]
+    this.dir = [-1,0]
     this.speed = 1.25// Has to be a multiple of cellSize  
     this.nextCellType = "" //String that indicated if the next cell in current direction is wall or path
   }
@@ -22,7 +22,6 @@ class player{
     c.arc(this.xPixel+offset,this.yPixel+offset,playerSize,0,2*Math.PI)
     c.fill()
     c.stroke()
-
   }
   movePacman(){
     //Movement when Key Pressed

@@ -1,45 +1,32 @@
-let c = document.querySelector('canvas').getContext('2d')
-let cellSize = 20
+//Creating Grid 
+for(i=0; i<rows;i++){
+    for(j=0; j<cols;j++){
+        grid.push(new cell(j,i)) //2D array of all cells 
+        nodes.push(new node(j,i, false)) //2D array of "Fake Nodes". Nodes used for A* Path Finiding.
+    }
+}
 
-let canvasHeight = 31*cellSize
-let canvasWidth = 29*cellSize
-
-
-let rows = canvasHeight/cellSize
-let cols = canvasWidth/cellSize
-// ROWS = 31 , COLS = 29 
-
-c.canvas.height = canvasHeight*2
-c.canvas.width = canvasWidth*2
-c.canvas.style.height = canvasHeight.toString().concat("px")
-c.canvas.style.width = canvasWidth.toString().concat("px")
-c.scale(2,2)
-
-let pacman = new player(1,1, "#FFFF00")
-
-let grid = []
-let foodGrid = [] 
-let wallColor = "#2121DE"
-
+//Cell Constructor 
 function cell(i,j){
     this.i = i
     this.j = j 
     this.wall = [false,false,false,false] //Top, Right, Bottom, Left
     this.type = "path"
-    this.cellFood = new food(this.i,this.j)
+    this.cellFood = new food(this.i,this.j) //Each cell contains food. Even Walls 
     this.draw = function(){
         if(this.wall[0]){
-            drawLine(i,j,i+1,j)
+            drawLine(i,j,i+1,j,"#2121DE")
         }
         if(this.wall[1]){
-            drawLine(i+1,j,i+1,j+1)
+            drawLine(i+1,j,i+1,j+1,"#2121DE")
         }
         if(this.wall[2]){
-            drawLine(i,j+1,i+1,j+1)
+            drawLine(i,j+1,i+1,j+1,"#2121DE")
         }
         if(this.wall[3]){
-            drawLine(i,j,i,j+1)
+            drawLine(i,j,i,j+1,"#2121DE")
         }
+        
     }
     this.color = function(){
         if(this.type == "wall"){
@@ -51,119 +38,20 @@ function cell(i,j){
     }
 }
 
-
-function drawLine(startx,starty,endx,endy){
+//Function for Drawing a Line
+function drawLine(startx,starty,endx,endy,color){
     startx *= cellSize
     starty *= cellSize
     endx *= cellSize
     endy *= cellSize
     c.beginPath()
     c.lineWidth = 0
-    c.strokeStyle = wallColor
+    c.strokeStyle = color
     c.moveTo(startx,starty)
     c.lineTo(endx,endy)
     c.stroke()
 }
-
-for(i=0; i<rows;i++){
-    for(j=0; j<cols;j++){
-        grid.push(new cell(j,i))
-        // foodGrid.push(new food(j,i))
-    }
-}
-
-window.requestAnimationFrame(gameLoop)
-function gameLoop(){
-    drawGrid()
-    
-    pacman.draw()
-    pacman.movePacman()
-    pacman.update()
-    
-    foodEaten()
-
-    window.addEventListener("keydown",findKeyPressed)
-    window.requestAnimationFrame(gameLoop)
-}
-
-let superFoodCounter = 0 
-function foodEaten(){
-    if(pacman.currentCell[0] == 1 && pacman.currentCell[1] == 3){
-        superfoodEaten()
-    }
-    if(pacman.currentCell[0] == 1 && pacman.currentCell[1] == 23){
-        superfoodEaten()
-    }
-    if(pacman.currentCell[0] == 27 && pacman.currentCell[1] == 3){
-        superfoodEaten()
-    }
-    if(pacman.currentCell[0] == 27 && pacman.currentCell[1] == 23){
-        superfoodEaten()
-    }
-    grid[convert(pacman.currentCell[0],pacman.currentCell[1])].cellFood.status = "Eaten"
-
-}
-
-function superfoodEaten(index){
-    if(grid[convert(pacman.currentCell[0],pacman.currentCell[1])].cellFood.status == "SuperFood"){
-        console.log("SuperFood Eaten")
-    }
-    else{ 
-        grid[convert(pacman.currentCell[0],pacman.currentCell[1])].cellFood.status = "Eaten"
-    }
-}
-
-
-
-// 1,3 
-// 27,3 
-// 1,23    ===> Super Food Position 
-// 27,23
-
-
-
-function drawGrid(){
-    c.clearRect(0,0,canvasWidth,canvasHeight)
-    // showLines()
-    var foodCounter = -56 // 56 "food" are in walls or are blank in path
-    for(i=0; i<cols;i++){
-        for(j=0; j<rows;j++){
-            if(grid[convert(i,j)].cellFood.status == "Eaten"){
-                foodCounter++
-            }
-            grid[convert(i,j)].draw()
-            if(grid[convert(i,j)].type == "path"){
-                grid[convert(i,j)].cellFood.show()
-            }
-        }    
-    }
-}
-
-
-
-function showLines(){
-    for(i=0;i<=canvasHeight;i+=cellSize){
-        c.beginPath()
-        c.lineWidth = 1
-        c.strokeStyle = "#FFFFFF"
-        c.moveTo(0,i)
-        c.lineTo(canvasWidth,i)
-        c.stroke()
-    }
-    for(i=0;i<=canvasWidth;i+=cellSize){
-        c.beginPath()
-        c.lineWidth = 1
-        c.strokeStyle = "#FFFFFF"
-        c.moveTo(i,0)
-        c.lineTo(i,canvasHeight)
-        c.stroke()
-    }
-}
-
-function convert(i,j){
-    return i + j*cols
-}
-
+//Defining the cell type to wall if needed  
 function cellType(){ 
     for(i = 0; i<cols;i++){
         grid[convert(i,0)].type = "wall"
@@ -264,6 +152,8 @@ function cellType(){
         }
     }
 }
+
+//Adding Blue lines. Food and Superfood placement - Only paths should have food
 function design(){
     //SuperFood Design 
     grid[convert(1,3)].cellFood.status = "SuperFood"
@@ -408,9 +298,11 @@ function design(){
         }
     }   
 }
+
+//Flipping design and wall type across vertical center. Flipping left to right
 function mirror(){
-    for(i= 0;i<=rows;i++){
-        for(j=0;j<=cols;j++){
+    for(i=0;i<cols-1;i++){  //cols -1 is used because the vertical center axis lies on a cell 
+        for(j=0;j<rows;j++){
             grid[convert(28-i,j)].wall[0] = grid[convert(i,j)].wall[0]
             grid[convert(28-i,j)].wall[2] = grid[convert(i,j)].wall[2]
             grid[convert(28-i,j)].wall[1] = grid[convert(i,j)].wall[3]
@@ -422,6 +314,49 @@ function mirror(){
 }
 
 
+//Placing "real" nodes in cells where direction can change.  
+function addNodes(){
+    for(i = 0; i<=rows;i++){
+        for(j = 0; j<=cols; j++){
+            if(grid[convert(i,j)].type == "path" && checkChangeDirection(i,j)){
+                nodes[convert(i,j)].real = true 
+            }
+        }
+    }
+}
+
+function checkChangeDirection(i,j){
+    if(grid[convert(i-1,j)].type  == "path" && grid[convert(i+1,j)].type  == "path" && grid[convert(i,j-1)].type  == "wall" && grid[convert(i,j+1)].type  == "wall" ){
+        return false
+    }
+    else if(grid[convert(i,j-1)].type  == "path" && grid[convert(i,j+1)].type  == "path" && grid[convert(i-1,j)].type  == "wall" && grid[convert(i+1,j)].type  == "wall"){
+        return false
+    }
+    else{
+        return true
+    }
+}
+
+
+function node(i,j,real){
+    this.i = i
+    this.j = j 
+    this.real = real 
+    this.sourceDistance = 0 //will need to change 
+    this.targetDistance = 0 //will need to change 
+    this.totalDistace = this.sourceDistance + this.targetDistance //will need to change 
+    
+    this.draw = function(){
+        if(this.real == true){
+            c.fillStyle = "#FFFFFF"
+            c.fillRect(this.i*cellSize,this.j*cellSize,cellSize,cellSize)
+        }
+    }
+}
+
+
 cellType()
 design()
 mirror()
+addNodes()
+
