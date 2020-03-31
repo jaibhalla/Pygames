@@ -6,6 +6,13 @@ for(i=0; i<rows;i++){
     }
 }
 
+cellType()
+design()
+mirror()
+addNodes()
+addEdges()
+
+
 //Cell Constructor 
 function cell(i,j){
     this.i = i
@@ -313,17 +320,37 @@ function mirror(){
     } 
 }
 
-
 //Placing "real" nodes in cells where direction can change.  
 function addNodes(){
+    let lol = 0 
     for(i = 0; i<=rows;i++){
         for(j = 0; j<=cols; j++){
             if(grid[convert(i,j)].type == "path" && checkChangeDirection(i,j)){
-                nodes[convert(i,j)].real = true 
+                nodes[convert(i,j)].real = true  //Node Exists 
             }
         }
     }
+    
 }
+
+//Node constructor
+function node(i,j,real){
+    this.i = i
+    this.j = j 
+    this.real = real 
+    this.nextNodes = []
+    
+    this.draw = function(){
+        if(this.real == true){
+            c.fillStyle = "#FFFFFF"
+            c.fillRect(this.i*cellSize,this.j*cellSize,cellSize,cellSize)
+        }
+        for(k = 0; k < this.nextNodes.length; k++){
+            drawLine(this.i + 0.5,this.j + 0.5,this.nextNodes[k].i + 0.5,this.nextNodes[k].j + 0.5,"#FFFFFF" )
+        }
+    }
+}
+
 
 function checkChangeDirection(i,j){
     if(grid[convert(i-1,j)].type  == "path" && grid[convert(i+1,j)].type  == "path" && grid[convert(i,j-1)].type  == "wall" && grid[convert(i,j+1)].type  == "wall" ){
@@ -338,25 +365,54 @@ function checkChangeDirection(i,j){
 }
 
 
-function node(i,j,real){
-    this.i = i
-    this.j = j 
-    this.real = real 
-    this.sourceDistance = 0 //will need to change 
-    this.targetDistance = 0 //will need to change 
-    this.totalDistace = this.sourceDistance + this.targetDistance //will need to change 
-    
-    this.draw = function(){
-        if(this.real == true){
-            c.fillStyle = "#FFFFFF"
-            c.fillRect(this.i*cellSize,this.j*cellSize,cellSize,cellSize)
+function addEdges(){
+    for(j= 0; j<rows;j++){
+        for(i = 0; i<cols; i++){ 
+            if(grid[convert(i,j)].type == "path" && nodes[convert(i,j)].real == true ){ 
+                if(grid[convert(i+1,j)].type == "path"){//If the next cell is "path" type, node will exist in that direction at one point
+                    nodes[convert(i,j)].nextNodes.push(findEdge(i,j,1,0)) //right
+                    // console.log([i,j] + " Right is Path") 
+                    }
+                if(grid[convert(i,j+1)].type == "path"){ //down
+                    nodes[convert(i,j)].nextNodes.push(findEdge(i,j,0,1)) 
+                    // console.log([i,j] + " down is Path") 
+                }
+                if(grid[convert(i-1,j)].type == "path"){ //left
+                    nodes[convert(i,j)].nextNodes.push(findEdge(i,j,-1,0)) 
+                    // console.log([i,j] + " left is Path") 
+                }
+                if(grid[convert(i,j-1)].type == "path"){ //up
+                    nodes[convert(i,j)].nextNodes.push(findEdge(i,j,0,-1))
+                    // console.log(i + j + " up is Path") 
+                }
+            }
         }
     }
+
+ 
+    
 }
 
+function findEdge(i,j,xincrement,yincrement){
+    while(nodes[convert(i+xincrement,j+yincrement)].real == false){
+        console.log(nodes[convert(i+xincrement,j+yincrement)])
+        if(xincrement !=0){
+            if(xincrement > 0){
+                xincrement++
+            }
+            if((xincrement < 0)){
+                xincrement--
+            } 
+        }
+        if(yincrement !=0){
+            if(yincrement > 0){
+                yincrement++
+            }
+            if((yincrement < 0)){
+                yincrement--
+            } 
+        }
+    }
+    return nodes[convert(i+xincrement,j+yincrement)]
 
-cellType()
-design()
-mirror()
-addNodes()
-
+}

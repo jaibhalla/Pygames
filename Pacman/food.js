@@ -8,7 +8,7 @@ function food(i,j){
     this.show = function(){
         if(this.status == "Not Eaten"){
             c.fillStyle = "#FFFFFF"
-            c.fillRect(this.i+offset,this.j+offset,this.size,this.size)
+            c.fillRect(this.i+offset-(this.size/2),this.j+offset-(this.size/2),this.size,this.size) // Subtract half of size so the centers line up
         }
         else if(this.status == "SuperFood"){
             c.beginPath()

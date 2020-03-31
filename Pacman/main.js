@@ -47,11 +47,7 @@ function drawGrid(){
                 grid[convert(i,j)].cellFood.show()
             }
             grid[convert(i,j)].draw()
-<<<<<<< HEAD
             // nodes[convert(i,j)].draw()
-=======
-//             nodes[convert(i,j)].draw()
->>>>>>> 799b9750e78ce828530cf635db029a9ac34cc8c5
         }    
     }
 }
