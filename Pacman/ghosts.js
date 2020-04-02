@@ -1,10 +1,10 @@
 class ghost{
-    constructor(personality){
+    constructor(personality,i,j){
         switch(personality){
             case "pinky": 
-                this.currentCell = [1,1] 
+                this.currentCell = [i,j] 
                 this.color = "#FFB8FF"
-                this.dir = [1,0]
+                this.dir = [0,0]
                 break
 
             case "blinky": 
@@ -32,7 +32,9 @@ class ghost{
         this.speed = 1.25// Has to be a multiple of cellSize  
         this.targetCell = [16,23] //Dependant on the mode it is in 
         this.mode = "Chase" // Chase, frightend, Scatter, Eaten 
+        this.pathInfo = [[],[]] //contains path of nodes[0] and directions when reaching node[1]
         this.path = []
+        this.pathDirection = []
         this.nodeToTest = []
     }
     drawShape(){//Drawing Circle and Target 
@@ -45,6 +47,34 @@ class ghost{
     }
     drawTarget(){
         c.fillRect(this.targetCell[0]*cellSize,this.targetCell[1]*cellSize,cellSize,cellSize)
+    }
+    updateDirection(){
+        if(this.path.length>0){
+            // console.log(this.currentCell)
+            
+            if(this.currentCell[0] == this.path[0].i && this.currentCell[1] == this.path[0].j){
+                // console.log(this.pathDirection[0])
+                this.dir[0] = this.pathDirection[0][0]
+                this.dir[1] = this.pathDirection[0][1]
+                this.path.shift()
+                this.pathDirection.shift()
+            }
+        }
+        
+        
+    }
+    
+    moveGhost(){
+        this.updateDirection()
+        this.xPixel += this.dir[0]*this.speed
+        this.yPixel += this.dir[1]*this.speed
+        
+        if(this.xPixel%cellSize == 0 && this.yPixel%cellSize == 0){
+            this.currentCell[0] = this.xPixel/cellSize
+            this.currentCell[1] = this.yPixel/cellSize
+        }
+
+        // console.log(this.currentCell)
     }
 }
 

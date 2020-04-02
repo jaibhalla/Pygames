@@ -1,4 +1,32 @@
-pinky.path = aStar(nodes[convert(1,1)],nodes[convert(pinky.targetCell[0],pinky.targetCell[1])])
+// pinky.path = aStar(nodes[convert(pinky.currentCell[0],pinky.currentCell[1])],nodes[convert(pinky.targetCell[0],pinky.targetCell[1])])
+
+// while(pinky.currentCell[0] != pinky.targetCell[0] && pinky.currentCell[1] != pinky.targetCell[1] ){
+//     pinky.path = findPath(pinky.currentCell,pinky.targetCell, pinky.dir)
+//}
+
+pinky.pathInfo = findPath(pinky.currentCell,pinky.targetCell,pinky.dir)
+pinky.path = pinky.pathInfo[0]
+pinky.pathDirection = pinky.pathInfo[1]
+
+//Find the corresponding node for A* Algo to work 
+function findPath(startCell,endCell, dir){ 
+    let startNode 
+    let endNode 
+
+    //Checks current cell and all cells in moving direction 
+    for(k = 0; k<rows; k++){ 
+        if(nodes[convert(startCell[0]+(dir[0]*k), startCell[1]+(dir[1]*k))].real){
+            startNode = nodes[convert(startCell[0]+(dir[0]*k), startCell[1]+(dir[1]*k))]
+            break
+        }
+    }
+    if(nodes[convert(endCell[0],endCell[1])].real){
+        endNode = nodes[convert(endCell[0],endCell[1])]
+    }
+
+    return aStar(startNode,endNode)
+}
+
 
 function aStar(sourceNode,targetNode){ //Pass Nodes to function 
     let nodesToTest = []// Only add to array when visited = false  
@@ -75,7 +103,34 @@ function aStar(sourceNode,targetNode){ //Pass Nodes to function
             path.unshift(temp) //Added to begining of array
             temp = temp.parent[0]
         }
-        return path
+        path.unshift(sourceNode) // Source Node added to the start of the list. 
+        
+        let pathDirections = [] 
+        for(k = 0; k<path.length-1;k++){
+            kDirection = [0,0]
+            if(path[k+1].j == path[k].j ){
+                if(path[k+1].i - path[k].i>0){
+                    kDirection[0] = 1
+                    kDirection[1] = 0
+                }
+                else if(path[k+1].i - path[k].i<0){
+                    kDirection[0] = -1
+                    kDirection[1] = 0
+                }
+            }
+            if(path[k+1].i == path[k].i){
+                if(path[k+1].j - path[k].j>0){
+                    kDirection[0] = 0
+                    kDirection[1] = 1
+                }
+                else if(path[k+1].i - path[k].i<0){
+                    kDirection[0] = 0
+                    kDirection[1] = -1
+                }
+            }
+            pathDirections.push(kDirection)
+        }
+        return [path,pathDirections]
     }
     
     function distanceToTarget(currentNode,targetNode){ //Pythagoras Theorem. Returning the distance * 10 - rounded to integer. 

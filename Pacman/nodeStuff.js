@@ -1,15 +1,3 @@
-//Placing "real" nodes in cells where direction can change. 
-function addNodes(){
-    for(i = 0; i<=rows;i++){
-        for(j = 0; j<=cols; j++){
-            if(grid[convert(i,j)].type == "path" && checkChangeDirection(i,j)){
-                nodes[convert(i,j)].real = true  //Node Exists 
-            }
-        }
-    }
-    
-}
-
 //Node constructor
 function node(i,j,real){
     this.i = i
@@ -37,26 +25,40 @@ function node(i,j,real){
             }
         }
         else if(value == "showPinkyPath"){
+            c.beginPath()
             for(k=-1;k<pinky.path.length-1;k++){
-                c.beginPath()
                 c.lineWidth = 3
                 c.strokeStyle = pinky.color
                 if(k==-1){
                     c.moveTo(pinky.xPixel+offset,pinky.yPixel+offset)
                     c.lineTo(pinky.path[0].i*cellSize+offset,pinky.path[0].j*cellSize+offset)
-                    
                 }
                 else{
                     c.moveTo(pinky.path[k].i*cellSize+offset,pinky.path[k].j*cellSize+offset)
                     c.lineTo(pinky.path[k+1].i*cellSize+offset,pinky.path[k+1].j*cellSize+offset)
                 }
-                c.stroke()
+                
             }
+            c.stroke()
             c.lineWidth = 1
         }
         else if(value == "none"){} //empty block is the same as pass in python
     }
 }
+
+//Placing "real" nodes in cells where direction can change. 
+function addNodes(){
+    for(i = 0; i<=rows;i++){
+        for(j = 0; j<=cols; j++){
+            if(grid[convert(i,j)].type == "path" && checkChangeDirection(i,j)){
+                nodes[convert(i,j)].real = true  //Node Exists 
+            }
+        }
+    }
+    
+}
+
+
 
 //Function return True if cell allows for a change in direction 
 function checkChangeDirection(i,j){
@@ -75,7 +77,7 @@ function checkChangeDirection(i,j){
 function addEdges(){
     for(j= 0; j<rows;j++){
         for(i = 0; i<cols; i++){ 
-            if(grid[convert(i,j)].type == "path" && nodes[convert(i,j)].real == true ){ 
+            if(grid[convert(i,j)].type == "path" && nodes[convert(i,j)].real == true ){ // Dont look at walls, or when nodes don't exist 
                 if(grid[convert(i+1,j)].type == "path"){//If the next cell is "path" type, node will exist in that direction at one point
                     nodes[convert(i,j)].nextNodes.push(findEdge(i,j,1,0)) //right
                     // console.log([i,j] + " Right is Path") 

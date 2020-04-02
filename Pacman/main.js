@@ -16,8 +16,7 @@ c.canvas.style.width = canvasWidth.toString().concat("px")
 c.scale(2,2)
 
 let pacman = new player("#FFFF00")
-
-let pinky = new ghost("pinky")
+let pinky = new ghost("pinky",1,1)
 
 // let blinky = new ghost("blinky")
 // let inky = new ghost("inky")
@@ -35,7 +34,6 @@ function gameLoop(){
 
 function drawGrid(){
     c.clearRect(0,0,canvasWidth,canvasHeight)
-    // showLines()
     let foodCounter = -56 // 56 "food" are in walls or are blank in path
     for(j=0; j<rows;j++){
         for(i=0; i<cols;i++){
@@ -49,7 +47,8 @@ function drawGrid(){
                 grid[convert(i,j)].cellFood.show()
             }
             grid[convert(i,j)].draw()
-            nodes[convert(i,j)].draw("none")
+            // nodes[convert(i,j)].draw("showNodes")
+            // nodes[convert(i,j)].draw("showPinkyPath")
         }    
     }
 }
@@ -90,6 +89,7 @@ function foodStuff(){
 function ghostStuff(){
     pinky.drawShape()
     pinky.drawTarget()
+    pinky.moveGhost()
     // pinky.drawPath()
     // blinky.draw()
     // inky.draw()
@@ -103,22 +103,3 @@ function convert(i,j){
 
 
 
-
-// function showLines(){
-//     for(i=0;i<=canvasHeight;i+=cellSize){
-//         c.beginPath()
-//         c.lineWidth = 1
-//         c.strokeStyle = "#FFFFFF"
-//         c.moveTo(0,i)
-//         c.lineTo(canvasWidth,i)
-//         c.stroke()
-//     }
-//     for(i=0;i<=canvasWidth;i+=cellSize){
-//         c.beginPath()
-//         c.lineWidth = 1
-//         c.strokeStyle = "#FFFFFF"
-//         c.moveTo(i,0)
-//         c.lineTo(i,canvasHeight)
-//         c.stroke()
-//     }
-// }
