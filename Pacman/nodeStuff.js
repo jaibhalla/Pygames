@@ -26,18 +26,44 @@ function node(i,j,real){
         }
         else if(value == "showPinkyPath"){
             c.beginPath()
-            for(k=-1;k<pinky.path.length-1;k++){
-                c.lineWidth = 3
-                c.strokeStyle = pinky.color
-                if(k==-1){
-                    c.moveTo(pinky.xPixel+offset,pinky.yPixel+offset)
-                    c.lineTo(pinky.path[0].i*cellSize+offset,pinky.path[0].j*cellSize+offset)
-                }
-                else{
-                    c.moveTo(pinky.path[k].i*cellSize+offset,pinky.path[k].j*cellSize+offset)
-                    c.lineTo(pinky.path[k+1].i*cellSize+offset,pinky.path[k+1].j*cellSize+offset)
-                }
-                
+            c.lineWidth = 3
+            c.strokeStyle = pinky.color
+            c.moveTo(pinky.xPixel+offset,pinky.yPixel+offset)
+            for(k=0;k<pinky.path.length;k++){
+                c.lineTo(pinky.path[k].i*cellSize+offset,pinky.path[k].j*cellSize+offset)
+            }
+            c.stroke()
+            c.lineWidth = 1
+        }
+        else if(value == "showBlinkyPath"){
+            c.beginPath()
+            c.lineWidth = 3
+            c.strokeStyle = blinky.color
+            c.moveTo(blinky.xPixel+offset,blinky.yPixel+offset)
+            for(k=0;k<blinky.path.length;k++){
+                c.lineTo(blinky.path[k].i*cellSize+offset,blinky.path[k].j*cellSize+offset)
+            }
+            c.stroke()
+            c.lineWidth = 1
+        }
+        else if(value == "showInkyPath"){
+            c.beginPath()
+            c.lineWidth = 3
+            c.strokeStyle = inky.color
+            c.moveTo(inky.xPixel+offset,inky.yPixel+offset)
+            for(k=0;k<inky.path.length;k++){
+                c.lineTo(inky.path[k].i*cellSize+offset,inky.path[k].j*cellSize+offset)
+            }
+            c.stroke()
+            c.lineWidth = 1
+        }
+        else if(value == "showClydePath"){
+            c.beginPath()
+            c.lineWidth = 3
+            c.strokeStyle = clyde.color
+            c.moveTo(clyde.xPixel+offset,clyde.yPixel+offset)
+            for(k=0;k<clyde.path.length;k++){
+                c.lineTo(clyde.path[k].i*cellSize+offset,clyde.path[k].j*cellSize+offset)
             }
             c.stroke()
             c.lineWidth = 1
@@ -47,32 +73,28 @@ function node(i,j,real){
 }
 
 //Placing "real" nodes in cells where direction can change. 
-function addNodes(){
+// function addNodes(){
+//     for(i = 0; i<=rows;i++){
+//         for(j = 0; j<=cols; j++){
+//             if(grid[convert(i,j)].type == "path" && checkChangeDirection(i,j)){
+//                 nodes[convert(i,j)].real = true  //Node Exists 
+//             }
+//         }
+//     }
+//     nodes[convert(14,11)].real = true
+// }
+
+function addNodes(){ //Adding nodes to all cells that are paths
     for(i = 0; i<=rows;i++){
         for(j = 0; j<=cols; j++){
-            if(grid[convert(i,j)].type == "path" && checkChangeDirection(i,j)){
+            if(grid[convert(i,j)].type == "path"){
                 nodes[convert(i,j)].real = true  //Node Exists 
             }
         }
     }
+    nodes[convert(14,12)].real = true
     
 }
-
-
-
-//Function return True if cell allows for a change in direction 
-function checkChangeDirection(i,j){
-    if(grid[convert(i-1,j)].type  == "path" && grid[convert(i+1,j)].type  == "path" && grid[convert(i,j-1)].type  == "wall" && grid[convert(i,j+1)].type  == "wall" ){
-        return false
-    }
-    else if(grid[convert(i,j-1)].type  == "path" && grid[convert(i,j+1)].type  == "path" && grid[convert(i-1,j)].type  == "wall" && grid[convert(i+1,j)].type  == "wall"){
-        return false
-    }
-    else{
-        return true
-    }
-}
-
 
 function addEdges(){
     for(j= 0; j<rows;j++){
@@ -97,10 +119,14 @@ function addEdges(){
             }
         }
     }
+    nodes[convert(14,11)].nextNodes.push(nodes[convert(14,12)])
+    nodes[convert(14,11)].nextNodesDistance.push(1)
 
- 
+    nodes[convert(14,12)].nextNodes.push(nodes[convert(14,11)])
+    nodes[convert(14,12)].nextNodesDistance.push(1)
     
 }
+
 
 function findEdge(i,j,xincrement,yincrement){
     while(nodes[convert(i+xincrement,j+yincrement)].real == false){
