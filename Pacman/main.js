@@ -50,6 +50,9 @@ function updateText(){
     if(blinky.mode == "Stop"){
         idLives.innerHTML = "Game Over!" 
     }
+    if(mainFoodCounter == 249){
+        idScore.innerHTML = "You Win!"
+    }
 }
 
 
