@@ -72,18 +72,6 @@ function node(i,j,real){
     }
 }
 
-//Placing "real" nodes in cells where direction can change. 
-// function addNodes(){
-//     for(i = 0; i<=rows;i++){
-//         for(j = 0; j<=cols; j++){
-//             if(grid[convert(i,j)].type == "path" && checkChangeDirection(i,j)){
-//                 nodes[convert(i,j)].real = true  //Node Exists 
-//             }
-//         }
-//     }
-//     nodes[convert(14,11)].real = true
-// }
-
 function addNodes(){ //Adding nodes to all cells that are paths
     for(i = 0; i<=rows;i++){
         for(j = 0; j<=cols; j++){
