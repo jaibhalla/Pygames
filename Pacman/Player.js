@@ -14,6 +14,7 @@ class player{
     this.dir = [-1,0]
     this.speed = 1.25// Has to be a multiple of cellSize  
     this.nextCellType = "" //String that indicated if the next cell in current direction is wall or path
+    this.lives = 3
   }
   draw(){//Drawing Circle Only
     c.beginPath()

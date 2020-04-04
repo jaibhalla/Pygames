@@ -44,11 +44,14 @@ class ghost{
         this.xPixel = this.currentCell[0]*cellSize 
         this.yPixel = this.currentCell[1]*cellSize 
         this.speed = 1.25// Has to be a multiple of cellSize  
-        this.mode = "Chase" // Chase, Scared, Scatter, Eaten 
+        this.mode = "Scared" // Chase, Scared, Scatter, Eaten, Stationary 
         this.path = []
         this.nodeToTest = []
         this.inCorner = false 
         this.homePoint = [14,12]
+        this.isStarting = false 
+        this.seconds1 = 0
+        this.seconds2 = 0
     }
     drawShape(){//Drawing Circle and Target 
         c.beginPath()
@@ -87,15 +90,24 @@ class ghost{
                     this.dir[0] = -1
                     this.dir[1] = 0
                 }
-            }
+            }            
         }
              
     }
     moveGhost(){
+        this.tempDir = [this.dir[0],this.dir[1]]
         this.updateDirection()
-        this.xPixel += this.dir[0]*this.speed
-        this.yPixel += this.dir[1]*this.speed
-        
+
+        if(this.tempDir[0] == this.dir[0] && this.tempDir[1] == this.dir[1]){
+            this.xPixel += this.dir[0]*this.speed
+            this.yPixel += this.dir[1]*this.speed
+        }
+        else{
+            this.xPixel = (this.currentCell[0]*cellSize) + (this.dir[0]*this.speed)
+            this.yPixel = (this.currentCell[1]*cellSize) + (this.dir[1]*this.speed)
+        }
+
+    
         if(this.xPixel%cellSize == 0 && this.yPixel%cellSize == 0){
             this.currentCell[0] = this.xPixel/cellSize
             this.currentCell[1] = this.yPixel/cellSize
@@ -125,25 +137,148 @@ class ghost{
         }
     }
     scaredMode(){
-        this.color = "#1919A6"
+        if(this.seconds2<4){
+            this.color = "#1919A6"
+        }
+        else{
+            if((Math.round(this.seconds2) - this.seconds2)>0){
+                this.color = "#FFFFFF"
+            }
+            else{
+                this.color = "#1919A6"
+            }
+        }
+
         if(this.path.length<2){
             let randomCell = [randomInteger(0,27),randomInteger(0,29)]
             while(nodes[convert(randomCell[0],randomCell[1])].real == false){
                 randomCell = [randomInteger(0,27),randomInteger(0,29)]
             }
             this.path = findPath(this.currentCell,randomCell)
-            console.log(randomCell)
         } 
     }
     eatenMode(){
-        this.color = "#555555"
+        if(this.seconds2<4){
+            this.color = "#555555"
+        }
+        else{
+            if((Math.round(this.seconds2) - this.seconds2)>0){
+                this.color = "#FFFFFF"
+            }
+            else{
+                this.color = "#555555"
+            }
+        }
         if(this.currentCell[0] == this.homePoint[0] && this.currentCell[1] == this.homePoint[1]){
-            this.path = []
-            this.dir = [0,0]
+            superFoodCounter = true
+            this.mode = "Scared"
         }
         else{
             this.path = findPath(this.currentCell,this.homePoint)
         }        
+    }
+    stopMode(){
+        blinky.path = []
+        pinky.path = []
+        inky.path = []
+        clyde.path = []
+
+        blinky.dir = [0,0]
+        pinky.dir = [0,0]
+        inky.dir = [0,0]
+        clyde.dir = [0,0]
+    }
+    restartMode(){
+        this.color = "#FFFFFF"
+        if(this.currentCell[0] == this.homePoint[0] && this.currentCell[1] == this.homePoint[1]){
+            this.path = [] 
+            this.dir = [0,0]
+            activeCollision = false
+        }
+        else{
+            this.path = findPath(this.currentCell,this.homePoint)
+        }  
+    }
+    collide(){
+        if(this.currentCell[0] == pacman.currentCell[0] && this.currentCell[1] == pacman.currentCell[1]){
+            if(this.mode == "Scared" || this.mode == "Eaten"){
+                this.mode = "Eaten"
+            }
+            else if (this.mode != "Restart"){ // If pacman is eaten when ghosts are in chase/scatter mode = every objects stop moving
+                pacman.dir = [0,0]
+                activeCollision = true
+                
+                if(pacman.lives == 3){ // Can't use pacman.lives-- because of loop
+                    pacman.lives = 2
+
+                    blinky.mode = "Restart"
+                    pinky.mode = "Restart"
+                    inky.mode = "Restart"
+                    clyde.mode = "Restart"
+                }
+                else if(pacman.lives == 2){
+                    pacman.lives = 1
+
+                    blinky.mode = "Restart"
+                    pinky.mode = "Restart"
+                    inky.mode = "Restart"
+                    clyde.mode = "Restart"
+                }
+                else if(pacman.lives == 1){
+                    pacman.lives = 0
+
+                    blinky.mode = "Restart"
+                    pinky.mode = "Restart"
+                    inky.mode = "Restart"
+                    clyde.mode = "Restart"
+                }
+                else{
+                    blinky.mode = "Stop"
+                    pinky.mode = "Stop"
+                    inky.mode = "Stop"
+                    clyde.mode = "Stop"
+                }
+                
+            }
+            
+        } 
+ 
+    }
+
+    timing(state){
+        if(state){//Chase and Scatter Config - According to Pac-Man Spec
+            this.seconds2 = 0
+            this.seconds1 += 1/60
+            if(this.seconds1>0 && this.seconds1<20){
+                this.mode = "Chase"
+            }
+            else if(this.seconds1>=20 && this.seconds1<27){
+                this.mode = "Scatter"
+            }
+            else if(this.seconds1>=27 && this.seconds1<47){
+                this.mode = "Chase"
+            }
+            else if(this.seconds1>=47 && this.seconds1<54){
+                this.mode = "Scatter"
+            }
+            else if(this.seconds1>=54 && this.seconds1<74){
+                this.mode = "Chase"
+            }
+            else if(this.seconds1>=74 && this.seconds1<87){
+                this.mode = "Scatter"
+            }
+            else{
+                this.mode = "Chase"
+            }
+        }
+
+        else{//For Eaten or Scared 
+            this.seconds2 += 1/60
+            if(this.seconds2 > 9){
+                superFoodCounter = false
+                state = true
+            }
+        }
     }
 }
 
