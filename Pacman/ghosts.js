@@ -205,7 +205,6 @@ class ghost{
                 this.mode = "Eaten"
             }
             else if (this.mode != "Restart"){ // If pacman is eaten when ghosts are in chase/scatter mode = every objects stop moving
-                pacman.dir = [0,0]
                 activeCollision = true
                 
                 if(pacman.lives == 3){ // Can't use pacman.lives-- because of loop
