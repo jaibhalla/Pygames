@@ -8,7 +8,6 @@ canvas{
     top: 50%;
     transform: translate(-50%,-50%);
     background-color:black;
-    /* border: 1px solid white; */
 }
 
 #layout{
