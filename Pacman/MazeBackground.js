@@ -13,8 +13,6 @@ mirror()
 addNodes()
 addEdges()
 
-
-
 //Cell Constructor 
 function cell(i,j){
     this.i = i
