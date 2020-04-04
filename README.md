@@ -11,3 +11,6 @@ This was pretty fun to make: I implemented the signature snake movement mechanic
 
 ## 3. 2048
 Looks pretty much the same as the original just without the winning and losing on-screen updates. If you lose, the screen will close and the terminal will print "You Lost"
+
+## 4. Pac-Man
+I made this on JavaScipt so that everyone can have some fun during the COVID-19 Quarantine. There isn't a scoreboard, win and lose screen because I'm sure everyone knows how this TITAN of arcade works. 
