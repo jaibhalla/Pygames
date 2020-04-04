@@ -4,7 +4,6 @@ function food(i,j){
     this.status = "Not Eaten"
     this.size = 3
     this.superSize = 6
-    
     this.show = function(){
         if(this.status == "Not Eaten"){
             c.fillStyle = "#FFFFFF"
