@@ -208,7 +208,16 @@ class ghost{
             else if (this.mode != "Restart"){ // If pacman is eaten when ghosts are in chase/scatter mode = every objects stop moving
                 activeCollision = true
                 
-                if(pacman.lives == 2){
+                if(pacman.lives == 3){
+                    pacman.lives = 2
+
+                    blinky.mode = "Restart"
+                    pinky.mode = "Restart"
+                    inky.mode = "Restart"
+                    clyde.mode = "Restart"
+                }
+
+                else if(pacman.lives == 2){
                     pacman.lives = 1
 
                     blinky.mode = "Restart"

@@ -38,16 +38,18 @@ window.requestAnimationFrame(gameLoop)
 function gameLoop(){
     drawGrid()
     pacmanStuff()
-    // ghostStuff()
+    ghostStuff()
     foodStuff()
     updateText()
     window.requestAnimationFrame(gameLoop)
 }
 
 function updateText(){
-    idLives.innerHTML = "Lives: " + (pacman.lives+1).toString()
-    idScore.innerHTML = "Score: " + (mainFoodCounter).toString() + "/249"
-
+    idLives.innerHTML = "Lives: " + pacman.lives.toString()
+    idScore.innerHTML = "Score: " + mainFoodCounter.toString() + "/249"
+    if(blinky.mode == "Stop"){
+        idLives.innerHTML = "Game Over!" 
+    }
 }
 
 
