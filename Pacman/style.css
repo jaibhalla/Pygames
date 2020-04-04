@@ -10,11 +10,15 @@ canvas{
     background-color:black;
 }
 
-#layout{
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%,-50%);
-    width: 620px;
-    height: 620px;
+#Score{
+    position: fixed;
+    color: white;
+    top: 250px;
+    left: 120px;
+}
+#Lives{
+    position: fixed;
+    color: white;
+    top: 250px;
+    right: 150px;
 }

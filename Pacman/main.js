@@ -28,15 +28,26 @@ let mainFoodCounter = 0
 let superFoodCounter = false
 let activeCollision = false
 
+let idScore = document.getElementById("Score")
+let idLives = document.getElementById("Lives")
+
+
 window.requestAnimationFrame(gameLoop)
 
 
 function gameLoop(){
     drawGrid()
     pacmanStuff()
-    ghostStuff()
+    // ghostStuff()
     foodStuff()
+    updateText()
     window.requestAnimationFrame(gameLoop)
+}
+
+function updateText(){
+    idLives.innerHTML = "Lives: " + (pacman.lives+1).toString()
+    idScore.innerHTML = "Score: " + (mainFoodCounter).toString() + "/249"
+
 }
 
 
